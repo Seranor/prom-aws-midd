@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-midd-exporter
+  namespace: prom-middleware
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aws-midd-exporter
+  template:
+    metadata:
+      labels:
+        app: aws-midd-exporter
+    spec:
+      containers:
+      - name: aws-midd-exporter
+        image: imagename:18
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9800
+          name: 9800tcp
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        env:
+        - name: PG_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              key: PG_DATABASE
+              name: aws-midd-exporter
+        - name: PG_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: PG_PORT
+              name: aws-midd-exporter
+        - name: PG_DBNAME
+          valueFrom:
+            configMapKeyRef:
+              key: PG_DBNAME
+              name: aws-midd-exporter
+        - name: AWS_REGION
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_REGION
+              name: aws-midd-exporter
+        - name: AWS_RDS_INSTANCE_ID
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_RDS_INSTANCE_ID
+              name: aws-midd-exporter
+        - name: SERVER_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: SERVER_PORT
+              name: aws-midd-exporter
+        - name: AWS_RDS_TYPE
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_RDS_TYPE
+              name: aws-midd-exporter
+        - name: PG_USER
+          valueFrom:
+            secretKeyRef:
+              key: PG_USER
+              name: aws-midd-exporter
+        - name: PG_PWD
+          valueFrom:
+            secretKeyRef:
+              key: PG_PWD
+              name: aws-midd-exporter
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: AWS_ACCESS_KEY_ID
+              name: aws-midd-exporter
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: AWS_SECRET_ACCESS_KEY
+              name: aws-midd-exporter
+        - name: MONGO_INFO
+          valueFrom:
+            secretKeyRef:
+              key: MONGO_INFO
+              name: aws-midd-exporter
+        - name: AWS_MONGO_INSTANCE_INFO
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_MONGO_INSTANCE_INFO
+              name: aws-midd-exporter
+        - name: AWS_ELASTICACHE_INSTANCE_INFO
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_ELASTICACHE_INSTANCE_INFO
+              name: aws-midd-exporter
